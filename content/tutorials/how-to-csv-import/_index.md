@@ -9,89 +9,89 @@ menu:
 ---
 # How To CSV-Import
 
-Um die Funktion des Importes von CSV und Bildern nutzen zu können, benötigen Sie einen webserver. Damit die easydb5 auch die Bilder in die easydb importieren darf, muss der Webserver mit ***CORS*** konfiguriert werden. 
+Um den Import von Objekten und den dazugehörigen Bildern mittels CSV durchführen zu können, benötigen Sie einen Webbrowser, welcher [CORS](/de/tutorials/cors) unterstützt. Beispielkonfigurationen für Webserver mit *CORS* können Sie [hier](/de/tutorials/cors) finden.
+
+---
+
+In den nachfolgenden Beispielen wird ein Objekttyp (bild) verwendet, welcher folgende Felder besitzt:
+
+| Easydb Feld Name | Datentyp | Feldname | Ist Mehrfachfeld | Ist in Mehrfachfeld |
+|------------------|----------|----------|------------------|---------------------|
+| bild | Datei | Bild | Nein | Nein |
+| alternative_bilder |  | Alternative Bilder | Ja | Nein |
+| alternative_bilder.alternatives_bild | Datei | Alternatives Bild | Nein | Ja |
+| titel | Einzeiliger Text | Titel | Nein | Nein |
+| beschreibung | Mehrzeiliger Text (mehrsprachig) | Beschreibung | Nein | Nein |
+| schlagwoerter | | Schlagwörter | Ja | Nein |
+| schlagwoerter.schlagwort | schlagwort | Schlagwort | Nein | Ja |
+
+## CSV Import (ohne Bild)
+
+In diesem Beispiel werden wir ein neues Objekt mittels des CSV Importers innerhalb der easydb erstellen. 
+
+Inhalt der CSV Datei:
+```csv
+Titel,Beschreibung,Schlagwoerter[].Schlagwort
+Mann vor Mac Book Air,Ein Mann der vor einem Mac Book Air sitzt und etwas schreibt,"Mann
+Mac Book Air
+Schreiben
+Lesen
+Arbeiten"
+Zeit kostet Geld,Laufende Zeit kostet Geld,"Uhr
+Alt
+Dunkel
+Beleuchtet
+Geld"
+```
+[CSV-Datei ohne Bilder](beispiel-csv.csv)
+
+***CSV-Importer Datei Einstellungen:***
+
+![](csv-import-ohne-bild-datei.PNG)
+
+***CSV-Importer Mapping Einstellungen:***
+
+![](csv-import-ohne-bild-mapping.PNG)
+
+***Ergebnis in easydb5:***
+
+![](csv-import-ohne-bild-ergebnis.PNG)
 
 ------
-## Webserver Konfigurationen
-### Apache 2
-#### CORS Konfiguration
-Um CORS nutzen zu können, muss als erstes die Apache2 Modifikation aktiviert werden. Um dies zu aktivieren, lassen sie folgendes Kommando auf der Maschine wo Apache2 läuft, auf der Konsole laufen. 
 
-```bash
-a2enmod headers
-```
+## CSV Import mit Bildern
 
-#### CORS auf einen Pfad beschränken:
-In der nachfolgenden Konfiguration werden wir den Zugriff mit CORS nur auf den Ordner *easydb* zulassen.
-```apache
-<VirtualHost *:80>
-        ServerName csv-import.beispieldomain.example
-        DocumentRoot "/srv/www/csv-import-daten/easydb/"
+In diesem Beispiel werden wir ein neues Objekt mit Bildern mittels des CSV Importers innerhalb der easydb erstellen. 
 
-        <Directory "/srv/www/csv-import-daten/easydb/">
-                Options Indexes FollowSymLinks MultiViews
-                AllowOverride None
-                Require all granted
-                Header set Access-Control-Allow-Origin "*"
-        </Directory>
-</VirtualHost>
-```
-
-**Hinweis:** *Servername, Port und Pfad* müssen auf ihr System angepasst werden.
-
-Am Ende des Pfades sollte der Speicherort ihrer zu importierenden Dateien sein. 
-
-Nach der Konfiguration muss Apache2 einem reload unterzogen werden. Wir empfehlen vor dem reload einen Konfigurations test durchzuführen, um sicherzustellen, dass keine Fehlkonfiguration in ihrem apache2 Webserver vorhanden ist. 
-```bash
-apache2ctl configtest #Folgendes sollte nun in der Konsole erscheinen: Syntax OK
-/etc/init.d/apache2 reload
-```
-
----
-
-### Web Server for Chrome
-
-***Webserver for Chrome*** ist eine Modifikation, welche es ihnen erlaubt innerhalb des gestarteten Chrome browsers, einen Webserver laufen zu lassen.
-
-#### CORS Konfiguration
-
-Im gegensatz zu Apache2 muss hier nur noch ***CORS*** mithilfe einer Checkbox aktiviert werden. Die CORS Option kann unter ***Show Advanced Settings*** angezeigt werden lassen. 
-
-Wenn der Haken gesetzt ist, müssen sie noch den Ordner wählen wo alle Dateien enthalten sind (Lokaler PC).
-
----
-
-# Import von CSV + Bild
-
-## CSV Importer Einstellungen
-
-Die Bilder die mittels CSV importer in die easydb geladen werden sollen, müssen mittels URL in dem jeweiligen Feld notiert werden. 
-
-Hier ein Beispiel:
-CSV Inhalt:
+Inhalt der CSV Datei:
 ```csv
-datei,titel,untertitel,beschreibung 
-http://csv-import.beispieldomain.example/meinbild.jpg,Hallo Welt,Ich bin ein Untertitel,Ich bin eine Beschreibung
+Bild,Alternative_bilder[].alternatives_bild,Titel,Beschreibung,Schlagwoerter[].Schlagwort
+http://10.122.3.60:8887/Refe_53b2c9d77d67c_work.jpg,"http://10.122.3.60:8887/Refe_54dbc2e9f1034_16318077309_f8e94d7569_o.jpg
+http://10.122.3.60:8887/Wueste-original.jpg
+http://10.122.3.60:8887/zitrone.jpg",Mann vor Mac Book Air,Ein Mann der vor einem Mac Book Air sitzt und etwas schreibt,"Mann
+Mac Book Air
+Schreiben
+Lesen
+Arbeiten"
+http://10.122.3.60:8887/the-clock%5B4%5D.jpg,http://10.122.3.60:8887/us-dollars%5B4%5D.jpg,Zeit kostet Geld,Laufende Zeit kostet Geld,"Uhr
+Alt
+Dunkel
+Beleuchtet
+Geld"
 ```
+[Beispiel CSV und Bilder](beispiel-csv-mit-bildern.zip)
 
-**Hinweis:** bitte tauschen Sie ***http://csv-import.beispieldomain.example/meinbild.jpg*** gegen die Adresse ihres Webserver mit CORS aus. Am Ende der URL sollte der Dateiname + Dateiendung stehen.
 
-### Import der CSV Datei in die easydb
+***CSV-Importer Datei Einstellungen:***
 
-Wenn die CSV Datei nun valide URL enthält, können wir nun den Import der CSV Datei vornehmen.
+![](csv-import-mit-bild-datei.PNG)
 
-- Gehen sie dazu in ihr easydb Webfrontent und öffnen Sie den CSV-Importer. 
-- Anschließend laden sie die abgeänderte CSV-Datei in die easydb. 
-- Weisen sie den CSV-Feldnamen und den CSV-Feldnamen zu. 
-- Wählen sie einen Objekttypen, Pool und eine Maske. 
-- Als ***Upload Typ für Dateien*** wählen Sie: `URL (remote put)`. 
-- Wenn sie das erledigt haben, können wir uns dem Mapping der CSV Felder widmen. 
+***CSV-Importer Mapping Einstellungen:***
 
-Mapping am obigen CSV Beispiel:
+![](csv-import-mit-bild-mapping.PNG)
 
-| CSV-Feld | Objekttyp-Feld | Beschreibung |
-|----------|----------------|--------------|
-| `datei`    | `picturefile#url` | Beachten Sie, dass beim Export einer CSV Datei aus der easydb, das Feld ohne Angabe von #url exportiert wird. Wenn sie einen erfolgreichen Import von Dateien mittels CSV tätigen möchten, müssen Sie hier ihr gewünschtes Feld mit #url angeben. |
-| `titel`    | `picturetitle`   | Der Inhalt des CSV Feldes `titel` soll auf das Feld `picturetitle` innerhalb unseres gewünschten Objekttypen gemappt werden. |
-| `untertitel` | `subtitle`  | Der Inhalt des CSV Feldes `untertitel` soll auf das Feld `subtitle` innerhalb unseres gewünschten Objekttypen gemappt werden. |
-| `beschreibung` | `description` | Der Inhalt des CSV Feldes `beschreibung` soll auf das Feld `description` innerhalb unseres gewünschten Objekttypen gemappt werden. |
+Beachten Sie hier, dass Sie in der Auswahl den Eintrag mit ***#url*** auswählen.
+
+***Ergebnis in easydb5:***
+
+![](csv-import-mit-bild-ergebnis.PNG)
