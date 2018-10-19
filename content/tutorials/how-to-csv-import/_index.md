@@ -21,17 +21,12 @@ Um CORS nutzen zu können, muss als erstes die Apache2 Modifikation aktiviert we
 a2enmod headers
 ```
 
-#### Die bentuzung von CORS auf einen Pfad beschränken:
+#### CORS auf einen Pfad beschränken:
 In der nachfolgenden Konfiguration werden wir den Zugriff mit CORS nur auf den Ordner *easydb* zulassen.
 ```apache
 <VirtualHost *:80>
-        ServerName csv-import.beispieldomain.de
+        ServerName csv-import.beispieldomain.example
         DocumentRoot "/srv/www/csv-import-daten/easydb/"
-
-        <Directory "/">
-                AllowOverride None
-                Require all denied
-        </Directory>
 
         <Directory "/srv/www/csv-import-daten/easydb/">
                 Options Indexes FollowSymLinks MultiViews
@@ -76,10 +71,10 @@ Hier ein Beispiel:
 CSV Inhalt:
 ```csv
 datei,titel,untertitel,beschreibung 
-http://10.122.3.131/meinbild.jpg,Hallo Welt,Ich bin ein Untertitel,Ich bin eine Beschreibung
+http://csv-import.beispieldomain.example/meinbild.jpg,Hallo Welt,Ich bin ein Untertitel,Ich bin eine Beschreibung
 ```
 
-**Hinweis:** bitte tauschen Sie ***http://10.122.3.131/meinbild.jpg*** gegen die Adresse ihres Webserver mit CORS aus. Am Ende der URL sollte der der Dateiname + Dateiendung stehen.
+**Hinweis:** bitte tauschen Sie ***http://csv-import.beispieldomain.example/meinbild.jpg*** gegen die Adresse ihres Webserver mit CORS aus. Am Ende der URL sollte der Dateiname + Dateiendung stehen.
 
 ### Import der CSV Datei in die easydb
 
