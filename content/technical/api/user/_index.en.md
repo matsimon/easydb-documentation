@@ -22,8 +22,8 @@ Retrieves one user.
 |   |   |
 |---|---|
 | `token` | Session token acquired with [/api/v1/session](/en/technical/api/session) |
-| `limit` | Return no more than <limit> users.  Default: 1000 |
-| `offset` | Skip first <offset> users.  Default: 0 |
+| `limit` | Return no more than <limit> users.  Default: `1000` |
+| `offset` | Skip first <offset> users.  Default: `0` |
 | `groupids` | Return users belonging to at least one of the groups with ID <groupids>.  Format: `groupid1,groupid2,...` |
 | `type` | Filter users by type. |
 | `changed_since` | Filter users with date of update greater or equal than <changed_since>. Format: `<YYYY-MM-DD>[THH:MM][:SS][T(+|-)HH:MM]` Ex: `2017-06-05`, `2017-06-05T19:30`, `2017-06-05T19:30-03:00` |
@@ -125,6 +125,12 @@ The first part which meets all conditions is used:
 | confirm address   | `email.usermanagement.block.email.confirm` | `needs_confirmation` is set to `true` | email part requests user to confirm the email address, `confirm_url` is replaced in l10n key. This URL contains an authentication token and the email address to be confirmed: `<proto>://<base-url>/#confirm_email:<token>:<email>`. The email part is URL-encoded. This data can be used to confirm the email using the [`/session/confirm_email`](/en/technical/api/session) API call. |
 | info new address  | `email.usermanagement.block.email.new_email` | email address is newly created | information about  email address is included, `use_for_login` and `use_for_email` are replaced using localized values of `yes` and `no` |
 | info updated address  | `email.usermanagement.block.email.update_email` | email address is updated | information about  email address is included, `use_for_login` and `use_for_email` are replaced using localized values of `yes` and `no` |
+
+#### *cancel a requested confirmation of an email address*
+
+When a confirmation request has been sent, the confirmation request can be cancelled by sending the write-only parameter `"cancel_confirmation": true`.
+
+This also overrules the write-only parameter `needs_confirmation`.
 
 ### *password part*
 
