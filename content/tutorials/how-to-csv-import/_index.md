@@ -47,15 +47,15 @@ Geld"
 
 ***CSV-Importer Datei Einstellungen:***
 
-![](csv-import-ohne-bild-datei.PNG)
+![](csv-import-ohne-bild-datei_new.PNG)
 
 ***CSV-Importer Mapping Einstellungen:***
 
-![](csv-import-ohne-bild-mapping.PNG)
+![](csv-import-ohne-bild-mapping_new.PNG)
 
 ***Ergebnis in easydb5:***
 
-![](csv-import-ohne-bild-ergebnis.PNG)
+![](csv-import-ohne-bild-ergebnis_new.PNG)
 
 ------
 
@@ -84,14 +84,14 @@ Geld"
 
 ***CSV-Importer Datei Einstellungen:***
 
-![](csv-import-mit-bild-datei.PNG)
+![](csv-import-mit-bild-datei_new.PNG)
 
 ***CSV-Importer Mapping Einstellungen:***
 
-![](csv-import-mit-bild-mapping.PNG)
+![](csv-import-mit-bild-mapping_new.PNG)
 
 Beachten Sie hier, dass Sie in der Auswahl den Eintrag mit ***#url*** auswählen.
 
 ***Ergebnis in easydb5:***
 
-![](csv-import-mit-bild-ergebnis.PNG)
+![](csv-import-mit-bild-ergebnis_new.PNG)
